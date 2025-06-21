@@ -3,8 +3,13 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import database from "../Database/Firebase.config.js"
-createRoot(document.getElementById('root')).render(
+import { ThemeProvider } from './Context/ThemeContext.jsx'
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <ThemeProvider>
+      
+        <App />
+      
+    </ThemeProvider>
+  </StrictMode>
+);

@@ -1,15 +1,18 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router";
+import { ThemeContext } from "../Context/ThemeContext"; // Update the path!
 
 const Home = () => {
   const auth = getAuth();
   const navigate = useNavigate();
   const [isVerfied, setisVerfied] = useState(false);
 
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user.emailVerified) {
+      if (user && user.emailVerified) {
         setisVerfied(user.emailVerified);
       } else {
         alert("please verify your email");
@@ -41,7 +44,8 @@ const Home = () => {
       },
       (err, result) => {
         if (err) {
-          throw new Error("Failed to upload image ");
+          console.error("Failed to upload image ", err);
+          return;
         }
         console.log(result.info.secure_url);
 
@@ -58,18 +62,32 @@ const Home = () => {
     script.async = true;
     document.body.appendChild(script);
   }, []);
-  // console.log(window.cloudinary); 
 
   return (
-    <div className='flex justify-center items-center h-screen'>
+    <div className="flex flex-col justify-center items-center h-screen gap-4 bg-BGWhite">
       <div>
-        <h1>imageUpload</h1>
-        <button className="bg-blue-400 px-3 py-2 rounded cursor-pointer" onClick={handleimageUpload}>
-          imageUpload
+        <h1 className="text-xl font-bold mb-2">Image Upload</h1>
+        <button
+          className="bg-blue-400 px-3 py-2 rounded cursor-pointer text-white"
+          onClick={handleimageUpload}
+        >
+          Upload Image
+        </button>
+      </div>
+
+      <div>
+        <p>
+          Current Theme: <strong>{theme}</strong>
+        </p>
+        <button
+          className="bg-gray-600 px-3 py-2 rounded cursor-pointer text-white"
+          onClick={toggleTheme}
+        >
+          Switch to {theme === "light" ? "dark" : "light"} mode
         </button>
       </div>
     </div>
   );
-}
+};
 
-export default Home
+export default Home;
