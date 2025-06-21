@@ -6,7 +6,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { getDatabase, push, ref, set } from "firebase/database";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 const Signup = () => {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -73,7 +73,7 @@ const Signup = () => {
           alert(
             "Verification email has been sent to your inbox."
           );
-          navigate("/"); 
+          navigate("/login"); 
         })
         .catch((error) => {
           console.error("Error sending verification email:", error);
@@ -132,6 +132,7 @@ const Signup = () => {
       >
         Signup
       </button>
+      <h3 className="text-sm mt-3">Already Have An Account? <NavLink to={"/login"} className={"text-red-500 "}>Here</NavLink> </h3>
     </div>
   );
 };
